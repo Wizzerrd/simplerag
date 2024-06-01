@@ -55,8 +55,8 @@ def insert_documents():
     conn.commit()
     cur.close()
 
-def query_db(query=None):
-    if not query: query=input("Enter a query: ")
+def query_db(query=""):
+    while not query: query=input("Enter a query: ")
     cur = conn.cursor()
     query_embedding = generate_embedding(query)
     cur.execute("""
