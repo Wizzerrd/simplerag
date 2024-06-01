@@ -13,7 +13,7 @@ conn = psycopg2.connect(f"dbname=rag_db user={os.environ['PSQL_USERNAME']} passw
 register_vector(conn)
 
 parser = argparse.ArgumentParser(description="Simple Python RAG Application.")
-parser.add_argument('-o', '--operation', choices=['insert', 'query', 'i', 'q'], required=True, help='Specify the operation to perform: insert or query.')
+parser.add_argument('-o', '--operation', choices=['insert', 'query'], required=True, help='Specify the operation to perform: insert or query.')
 
 def generate_embedding(text):
     response = client.embeddings.create(input=text, model="text-embedding-ada-002")
@@ -77,6 +77,9 @@ def query_db(query=None):
     )
     print(response.choices[0].message.content)
     
-args = parser.parse_args()   
-if args.operation.startswith('i') == 'insert': insert_documents()
-elif args.operation.startswith('q') == 'query': query_db()
+args = parser.parse_args()
+
+if args.operation == 'insert':
+    insert_documents()
+elif args.operation == 'query':
+    query_db()
